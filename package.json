@@ -1,0 +1,18 @@
+{
+	"name": "desktop",
+	"version": "1.0.0",
+	"main": "index.js",
+	"scripts": {
+		"init": "tsc --init",
+		"compile": "tsc && npm run build",
+		"build": "node build/build.js"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"description": "",
+	"devDependencies": {
+		"esbuild": "^0.23.1",
+		"typescript": "^5.5.4"
+	}
+}
