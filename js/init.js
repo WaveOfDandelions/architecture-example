@@ -1,45 +1,25 @@
 // ts/Components/Title.ts
-var Component = class {
+var TitleFactory = class {
+  create(type, text) {
+    let createdTitle = document.createElement(type);
+    createdTitle.textContent = text;
+    return createdTitle;
+  }
+  render(componentType, text, destination) {
+    const element = this.create(componentType, text);
+    if (destination) {
+      destination.appendChild(element);
+    }
+    if (!destination) {
+      throw new Error(
+        "\u0422\u0435\u0433 \u0432 \u043A\u043E\u0442\u043E\u0440\u044B\u0439 \u0432\u044B \u043F\u044B\u0442\u0430\u0435\u0442\u0435\u0441\u044C \u0434\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0437\u0430\u0433\u043E\u043B\u043E\u0432\u043E\u043A \u043E\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442"
+      );
+    }
+    return element;
+  }
 };
-var Title = class extends Component {
-  constructor(titleTagType, text) {
-    super();
-    this.text = text;
-    this.titleTagType = titleTagType;
-    this.heading = this.render();
-    this.heading.textContent = text;
-  }
-  render() {
-    const heading = document.createElement(this.titleTagType);
-    heading.textContent = this.text;
-    return heading;
-  }
-  get element() {
-    return this.heading;
-  }
-};
-console.log("title");
 
 // ts/init.ts
-var outputSection = document.querySelector(".headings");
-var heading1 = new Title("h1", "Hello World!");
-var heading2 = new Title("h2", "Hello Evhen!");
-var heading3 = new Title("h3", "Hello Vlad!");
-var heading4 = new Title("h4", "Hello TS!");
-var heading5 = new Title("h5", "Hello JS!");
-var heading6 = new Title("h6", "Hello React!");
-var outputArr = [
-  heading1.element,
-  heading2.element,
-  heading3.element,
-  heading4.element,
-  heading5.element,
-  heading6.element
-];
-function appendOutput(outputArr2) {
-  for (let i = 0; i < outputArr2.length; i++) {
-    outputSection?.appendChild(outputArr2[i]);
-  }
-}
-appendOutput(outputArr);
-console.log("init");
+var outputContainer = document.querySelector(".headings");
+var makeTitle = new TitleFactory();
+var h1 = makeTitle.render("h1", "Hello World!", outputContainer);

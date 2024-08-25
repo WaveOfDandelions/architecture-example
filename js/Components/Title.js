@@ -1,20 +1,17 @@
-class Component {
-}
-export default class Title extends Component {
-    constructor(titleTagType, text) {
-        super();
-        this.text = text;
-        this.titleTagType = titleTagType;
-        this.heading = this.render();
-        this.heading.textContent = text;
+export default class TitleFactory {
+    create(type, text) {
+        let createdTitle = document.createElement(type);
+        createdTitle.textContent = text;
+        return createdTitle;
     }
-    render() {
-        const heading = document.createElement(this.titleTagType);
-        heading.textContent = this.text;
-        return heading;
-    }
-    get element() {
-        return this.heading;
+    render(componentType, text, destination) {
+        const element = this.create(componentType, text);
+        if (destination) {
+            destination.appendChild(element);
+        }
+        if (!destination) {
+            throw new Error("Тег в который вы пытаетесь добавить заголовок отсутствует");
+        }
+        return element;
     }
 }
-console.log("title");

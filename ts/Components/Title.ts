@@ -1,33 +1,40 @@
-abstract class Component {
-	protected abstract render(): HTMLElement;
-}
-
+// Абстрактная фабрика и абстрактные методы
 type TitleTagType = "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 
-export default class Title extends Component {
-	private text: string;
-	private titleTagType: TitleTagType;
-	private heading: HTMLElement;
-
-	constructor(titleTagType: TitleTagType, text: string) {
-		super();
-		this.text = text;
-		this.titleTagType = titleTagType;
-
-		this.heading = this.render();
-		this.heading.textContent = text;
-	}
-
-	render(): HTMLElement {
-		const heading = document.createElement(this.titleTagType);
-		heading.textContent = this.text;
-
-		return heading;
-	}
-
-	public get element(): HTMLElement {
-		return this.heading;
-	}
+interface IComponentFactory {
+	create(type: TitleTagType, text: string): HTMLElement;
+	render(
+		componentType: string,
+		text: string,
+		destination: HTMLElement,
+	): HTMLElement;
 }
 
-console.log("title");
+export default class TitleFactory implements IComponentFactory {
+	public create(type: TitleTagType, text: string): HTMLElement {
+		let createdTitle: HTMLElement = document.createElement(type);
+		createdTitle.textContent = text;
+
+		return createdTitle;
+	}
+
+	public render(
+		componentType: TitleTagType,
+		text: string,
+		destination: HTMLElement | null,
+	): HTMLElement {
+		const element = this.create(componentType, text);
+
+		if (destination) {
+			destination.appendChild(element);
+		}
+
+		if (!destination) {
+			throw new Error(
+				"Тег в который вы пытаетесь добавить заголовок отсутствует",
+			);
+		}
+
+		return element;
+	}
+}
