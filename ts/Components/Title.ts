@@ -1,28 +1,30 @@
 // Абстрактная фабрика и абстрактные методы
-type TitleTagType = "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+type THTMLElements = HTMLElementTagNameMap[keyof HTMLElementTagNameMap]; 
 
-interface IComponentFactory {
-	create(type: TitleTagType, text: string): HTMLElement;
+type HeadingTitleTagType = "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+
+interface IComponentFactory<T> {
+	create(type: keyof HTMLElementTagNameMap, text: string): T;
 	render(
-		componentType: string,
+		componentType: keyof HTMLElementTagNameMap,
 		text: string,
-		destination: HTMLElement,
-	): HTMLElement;
+		destination: THTMLElements,
+	): T;
 }
 
-export default class TitleFactory implements IComponentFactory {
-	public create(type: TitleTagType, text: string): HTMLElement {
-		let createdTitle: HTMLElement = document.createElement(type);
+export default class TitleFactory implements IComponentFactory<HTMLHeadingElement> {
+	public create(type: HeadingTitleTagType, text: string) {
+		let createdTitle = document.createElement(type);
 		createdTitle.textContent = text;
 
 		return createdTitle;
 	}
 
 	public render(
-		componentType: TitleTagType,
+		componentType: HeadingTitleTagType,
 		text: string,
-		destination: HTMLElement | null,
-	): HTMLElement {
+		destination: THTMLElements | null,
+	) {
 		const element = this.create(componentType, text);
 
 		if (destination) {
